@@ -2,15 +2,16 @@
 NSE Options Expiry Engine
 Calculates expiry dates for NSE/BSE options
 
-Expiry Rules (Updated):
------------------------
-1. Nifty Weekly: Every Tuesday (CORRECTED)
+Expiry Rules (✅ VERIFIED FROM ANGEL ONE - Nov 2025):
+------------------------------------------------------
+1. Nifty Weekly: Every Tuesday (Verified: 11 Nov 2025)
 2. Nifty Monthly: Last Tuesday of month
-3. Bank Nifty Weekly: Every Wednesday
-4. Bank Nifty Monthly: Last Wednesday of month
-5. Fin Nifty Weekly: Every Tuesday
-6. Sensex Weekly: Every Thursday (CORRECTED - BSE)
+3. Bank Nifty Weekly: Every Tuesday (Verified: 25 Nov 2025)
+4. Bank Nifty Monthly: Last Tuesday of month
+5. Fin Nifty Weekly: Every Tuesday (Verified: 25 Nov 2025)
+6. Sensex Weekly: Every Thursday (Verified: 13 Nov 2025 - BSE)
 7. Sensex Monthly: Last Thursday of month
+8. Midcap Nifty Weekly: Every Tuesday (Verified: 25 Nov 2025)
 
 All expiries are on market open day (if holiday, previous trading day)
 """
@@ -24,13 +25,14 @@ class NSEExpiryEngine:
     """NSE/BSE Options Expiry Engine"""
 
     # Expiry weekdays (0=Monday, 1=Tuesday, ..., 6=Sunday)
+    # ✅ VERIFIED FROM ANGEL ONE DATA (Nov 2025)
     EXPIRY_DAYS = {
-        'NIFTY': 1,        # Tuesday (corrected as per latest NSE schedule)
-        'BANKNIFTY': 2,    # Wednesday
-        'FINNIFTY': 1,     # Tuesday
-        'SENSEX': 3,       # Thursday (corrected - BSE)
-        'BANKEX': 3,       # Thursday (BSE)
-        'MIDCPNIFTY': 0    # Monday
+        'NIFTY': 1,        # Tuesday (Verified: 11 Nov 2025)
+        'BANKNIFTY': 1,    # Tuesday (Verified: 25 Nov 2025)
+        'FINNIFTY': 1,     # Tuesday (Verified: 25 Nov 2025)
+        'SENSEX': 3,       # Thursday (Verified: 13 Nov 2025)
+        'BANKEX': 3,       # Thursday (BSE - assumed same as SENSEX)
+        'MIDCPNIFTY': 1    # Tuesday (Verified: 25 Nov 2025)
     }
 
     def __init__(self, holiday_calendar: Optional['NSEHolidayCalendar'] = None):
