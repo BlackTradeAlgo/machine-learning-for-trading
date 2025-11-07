@@ -89,7 +89,7 @@ class GammaScalpingStrategy:
         self.initial_spot = spot_price
         self.atm_strike = atm_strike
         self.atm_call_price = atm_call_price
-        self.atm_put_price = atm_put_premium
+        self.atm_put_price = atm_put_price
         self.call_delta = call_delta
         self.put_delta = put_delta
         self.call_gamma = call_gamma

@@ -34,20 +34,23 @@ Democratizing institutional-grade options trading tools for retail traders in In
   - Max Pain calculation
   - Open Interest analysis
 
-- ✅ **Strategy Library** (30+ Strategies)
-  - **Directional**: Long Call, Long Put, Bull/Bear Spreads
-  - **Non-Directional**: Iron Condor, Butterfly, Straddle, Strangle
-  - **Volatility**: Calendar Spreads, Diagonal Spreads
-  - **HFT/Scalping**: Gamma Scalping, Theta Harvesting
+- ✅ **Unified Strategy Library (v2.0.0)** - Intraday Focused
+  - **HFT/Scalping** (Pure Intraday):
+    - Gamma Scalping (delta-neutral with futures hedging)
+    - Zero DTE (0 Days To Expiry - expiry day only)
+  - **Range-Bound**: Iron Condor (limited risk/reward)
+  - **Volatility**: Long/Short Straddle (quick intraday scalps)
+  - **Smart Strategy Selector**: Auto-recommend based on market conditions
+  - **See [STRATEGY_GUIDE.md](STRATEGY_GUIDE.md) for complete guide**
 
-### **🤖 AI/ML Features** (Coming Soon)
+### **🤖 AI/ML Features**
 
-- LSTM for price prediction
-- Random Forest for direction forecasting
-- XGBoost for intraday signals
-- GARCH for volatility forecasting
-- Sentiment analysis (Twitter, Reddit, News)
-- Smart money detection (unusual options activity)
+- ✅ **LSTM Price Predictor** - Multi-step price forecasting
+- ✅ **Random Forest Direction Classifier** - Up/Down/Sideways prediction
+- ✅ **30+ Technical Features** - Automated feature engineering
+- 🔄 XGBoost for intraday signals (Coming Soon)
+- 🔄 GARCH for volatility forecasting (Coming Soon)
+- 🔄 Sentiment analysis (Twitter, Reddit, News) (Coming Soon)
 
 ### **📈 Analytics & Risk Management**
 
@@ -59,13 +62,23 @@ Democratizing institutional-grade options trading tools for retail traders in In
 - Max drawdown monitoring
 - SPAN margin calculator
 
-### **🔄 Backtesting** (Coming Soon)
+### **🔄 Backtesting & Paper Trading**
 
-- Event-driven backtest engine
-- Realistic slippage modeling
-- Transaction cost modeling (STT, brokerage, taxes)
-- Walk-forward optimization
-- Strategy comparison
+- ✅ **Event-Driven Backtest Engine** - Bar-by-bar simulation
+- ✅ **Realistic Cost Modeling** - STT, brokerage, GST, slippage
+- ✅ **Paper Trading Account** - Virtual trading with real prices
+- ✅ **Performance Analytics** - Sharpe, Sortino, max drawdown
+- 🔄 Walk-forward optimization (Coming Soon)
+
+### **🔥 Live Trading Integration**
+
+- ✅ **Angel One SmartAPI** - Complete integration with live trading
+- ✅ **Live Trading Engine** - Automated strategy execution
+- ✅ **Real-time Greeks** - Auto-calculated from live prices
+- ✅ **Risk Management** - Daily loss/profit limits, position sizing
+- ✅ **Auto Exit** - Mandatory 3:15 PM exit for intraday
+- ✅ **WebSocket Support** - Real-time tick data streaming
+- **See [ANGEL_ONE_SETUP.md](ANGEL_ONE_SETUP.md) for setup guide**
 
 ---
 
@@ -74,28 +87,28 @@ Democratizing institutional-grade options trading tools for retail traders in In
 ```
 indian_options_platform/
 ├── core/
-│   ├── options_pricing/      # Black-Scholes, Greeks, IV
-│   ├── market_data/           # NSE/BSE data integration
-│   ├── order_management/      # Order execution (coming soon)
-│   └── risk_engine/           # Risk management (coming soon)
+│   ├── options_pricing/       # ✅ Black-Scholes, Greeks, IV
+│   ├── market_data/            # ✅ NSE data + Angel One API
+│   ├── order_management/       # ✅ Live trading + Paper trading
+│   │   ├── live_trading_engine.py
+│   │   └── paper_trading.py
+│   └── risk_engine/            # Risk management (coming soon)
 │
-├── strategies/
-│   ├── directional/           # Directional strategies
-│   ├── non_directional/       # Iron Condor, Butterfly, etc.
-│   ├── volatility/            # Vol-based strategies
-│   ├── hft_scalping/          # HFT strategies
-│   └── ml_based/              # ML-powered strategies (coming soon)
+├── strategies/                # ✅ Unified Strategy Library (v2.0.0)
+│   ├── base_strategy.py      # Core base class
+│   ├── non_directional/      # Iron Condor, Straddle
+│   ├── hft_scalping/         # ✅ Gamma Scalping, Zero DTE
+│   └── __init__.py           # ✅ Smart strategy selector
 │
-├── ml_models/
-│   ├── iv_prediction/         # IV forecasting (coming soon)
-│   ├── price_prediction/      # Price forecasting (coming soon)
-│   ├── gamma_scalping/        # ML gamma scalping (coming soon)
-│   └── sentiment_analysis/    # News sentiment (coming soon)
+├── ml_models/                 # ✅ ML Models
+│   ├── price_prediction/     # ✅ LSTM, Random Forest
+│   │   ├── lstm_predictor.py
+│   │   └── random_forest_predictor.py
+│   └── (more coming soon)
 │
-├── backtesting/               # Backtest engine (coming soon)
-│   ├── options_backtest/
-│   ├── slippage_models/
-│   └── transaction_costs/
+├── backtesting/               # ✅ Backtesting Engine
+│   ├── options_backtest/     # ✅ Event-driven engine
+│   └── transaction_costs/    # ✅ STT, brokerage, slippage
 │
 ├── dashboard/                 # Web dashboard (coming soon)
 │   ├── live_monitoring/
