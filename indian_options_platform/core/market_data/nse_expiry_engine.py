@@ -17,8 +17,10 @@ All expiries are on market open day (if holiday, previous trading day)
 """
 
 from datetime import datetime, timedelta, date
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict
 import calendar
+import os
+import pandas as pd
 
 
 class NSEExpiryEngine:
@@ -331,6 +333,229 @@ class NSEExpiryEngine:
 
     def __repr__(self) -> str:
         return f"<NSEExpiryEngine: {len(self.EXPIRY_DAYS)} symbols>"
+
+    # ==================== METHOD 2: DYNAMIC EXPIRY FETCHING ====================
+
+    @classmethod
+    def fetch_expiries_from_angel_one(cls, api_key: str = None, client_id: str = None,
+                                      password: str = None, totp_secret: str = None) -> Dict[str, Dict]:
+        """
+        METHOD 2: Fetch actual expiries from Angel One API and auto-detect weekdays
+
+        This method connects to Angel One, fetches real expiry data for all symbols,
+        and automatically calculates the expiry weekday for each symbol.
+
+        Parameters:
+        -----------
+        api_key : str
+            Angel One API key (optional, reads from env if not provided)
+        client_id : str
+            Angel One client ID (optional, reads from env if not provided)
+        password : str
+            Angel One password (optional, reads from env if not provided)
+        totp_secret : str
+            Angel One TOTP secret (optional, reads from env if not provided)
+
+        Returns:
+        --------
+        Dict[str, Dict] : Dictionary with symbol data
+            {
+                'NIFTY': {
+                    'near_expiry': '11NOV2025',
+                    'expiry_date': datetime.date(2025, 11, 11),
+                    'weekday': 1,
+                    'weekday_name': 'Tuesday'
+                },
+                ...
+            }
+
+        Examples:
+        ---------
+        >>> # Fetch from Angel One
+        >>> data = NSEExpiryEngine.fetch_expiries_from_angel_one()
+        >>> print(data['NIFTY'])
+        {'near_expiry': '11NOV2025', 'expiry_date': datetime.date(2025, 11, 11),
+         'weekday': 1, 'weekday_name': 'Tuesday'}
+
+        >>> # Update EXPIRY_DAYS mapping
+        >>> new_mapping = {sym: info['weekday'] for sym, info in data.items()}
+        >>> print(new_mapping)
+        {'NIFTY': 1, 'BANKNIFTY': 1, 'FINNIFTY': 1, 'SENSEX': 3, 'MIDCPNIFTY': 1}
+        """
+        try:
+            from SmartApi.smartConnect import SmartConnect
+            import pyotp
+            import requests
+        except ImportError:
+            raise ImportError(
+                "Angel One dependencies not installed. Run: "
+                "pip install smartapi-python pyotp requests"
+            )
+
+        # Load from env if not provided
+        from dotenv import load_dotenv
+        load_dotenv()
+
+        api_key = api_key or os.getenv('ANGEL_API_KEY')
+        client_id = client_id or os.getenv('ANGEL_CLIENT_ID')
+        password = password or os.getenv('ANGEL_PASSWORD')
+        totp_secret = totp_secret or os.getenv('ANGEL_TOTP_SECRET')
+
+        if not all([api_key, client_id, password, totp_secret]):
+            raise ValueError(
+                "Angel One credentials not provided. Either pass them as arguments "
+                "or set environment variables: ANGEL_API_KEY, ANGEL_CLIENT_ID, "
+                "ANGEL_PASSWORD, ANGEL_TOTP_SECRET"
+            )
+
+        print("🔄 Connecting to Angel One API...")
+
+        # Login
+        smart_api = SmartConnect(api_key=api_key)
+        totp = pyotp.TOTP(totp_secret)
+        totp_code = totp.now()
+
+        session = smart_api.generateSession(client_id, password, totp_code)
+        print("✅ Connected to Angel One")
+
+        # Fetch instruments
+        print("📥 Fetching instrument master...")
+        url = "https://margincalculator.angelbroking.com/OpenAPI_File/files/OpenAPIScripMaster.json"
+        response = requests.get(url)
+        instruments = response.json()
+        df = pd.DataFrame(instruments)
+        print(f"✅ Loaded {len(df):,} instruments")
+
+        # Symbols to fetch
+        symbols = ['NIFTY', 'BANKNIFTY', 'FINNIFTY', 'SENSEX', 'MIDCPNIFTY', 'BANKEX']
+
+        results = {}
+        weekday_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+        print("\n" + "="*80)
+        print("FETCHING NEAR EXPIRIES FROM ANGEL ONE")
+        print("="*80)
+
+        for symbol in symbols:
+            # Get options for this symbol
+            opts = df[
+                (df['name'] == symbol) &
+                (df['instrumenttype'].isin(['OPTIDX', 'OPTSTK']))
+            ]
+
+            if opts.empty:
+                print(f"\n⚠️  {symbol}: No data found")
+                continue
+
+            # Get unique expiries and sort
+            expiries_raw = sorted(opts['expiry'].unique())
+
+            if not expiries_raw:
+                print(f"\n⚠️  {symbol}: No expiries found")
+                continue
+
+            # Parse first expiry (near expiry)
+            near_expiry_raw = expiries_raw[0]
+
+            try:
+                # Try parsing DD MMM YY format (e.g., '11NOV25')
+                expiry_date = pd.to_datetime(near_expiry_raw, format='%d%b%y', errors='coerce')
+
+                if pd.isna(expiry_date):
+                    # Try DD MMM YYYY format (e.g., '11NOV2025')
+                    expiry_date = pd.to_datetime(near_expiry_raw, format='%d%b%Y', errors='coerce')
+
+                if pd.isna(expiry_date):
+                    print(f"\n⚠️  {symbol}: Could not parse expiry '{near_expiry_raw}'")
+                    continue
+
+                # Convert to date
+                expiry_date = expiry_date.date()
+
+                # Get weekday (0=Monday, 1=Tuesday, etc.)
+                weekday = expiry_date.weekday()
+                weekday_name = weekday_names[weekday]
+
+                results[symbol] = {
+                    'near_expiry': near_expiry_raw,
+                    'expiry_date': expiry_date,
+                    'weekday': weekday,
+                    'weekday_name': weekday_name,
+                    'total_options': len(opts),
+                    'total_expiries': len(expiries_raw)
+                }
+
+                print(f"\n✅ {symbol}:")
+                print(f"   Near Expiry: {near_expiry_raw}")
+                print(f"   Date: {expiry_date.strftime('%d %b %Y')}")
+                print(f"   Weekday: {weekday_name} ({weekday})")
+                print(f"   Options: {len(opts):,}")
+
+            except Exception as e:
+                print(f"\n❌ {symbol}: Error parsing expiry - {e}")
+                continue
+
+        # Logout
+        smart_api.terminateSession(client_id)
+        print("\n" + "="*80)
+        print("✅ FETCH COMPLETE")
+        print("="*80)
+
+        return results
+
+    @classmethod
+    def update_expiry_days_from_angel_one(cls, api_key: str = None, client_id: str = None,
+                                          password: str = None, totp_secret: str = None,
+                                          auto_update: bool = False) -> Dict[str, int]:
+        """
+        METHOD 2: Fetch from Angel One and generate new EXPIRY_DAYS mapping
+
+        Parameters:
+        -----------
+        api_key, client_id, password, totp_secret : str
+            Angel One credentials (optional, reads from env)
+        auto_update : bool
+            If True, automatically updates the class variable EXPIRY_DAYS
+            If False, just returns the new mapping for review
+
+        Returns:
+        --------
+        Dict[str, int] : New EXPIRY_DAYS mapping
+
+        Examples:
+        ---------
+        >>> # Fetch and review (don't auto-update)
+        >>> new_mapping = NSEExpiryEngine.update_expiry_days_from_angel_one()
+        >>> print(new_mapping)
+        {'NIFTY': 1, 'BANKNIFTY': 1, ...}
+
+        >>> # Fetch and auto-update
+        >>> NSEExpiryEngine.update_expiry_days_from_angel_one(auto_update=True)
+        """
+        # Fetch data from Angel One
+        data = cls.fetch_expiries_from_angel_one(api_key, client_id, password, totp_secret)
+
+        # Generate new mapping
+        new_mapping = {symbol: info['weekday'] for symbol, info in data.items()}
+
+        print("\n" + "="*80)
+        print("GENERATED EXPIRY_DAYS MAPPING")
+        print("="*80)
+        print("\nEXPIRY_DAYS = {")
+        for symbol, info in data.items():
+            print(f"    '{symbol}': {info['weekday']},  # {info['weekday_name']} (Verified: {info['expiry_date'].strftime('%d %b %Y')})")
+        print("}")
+
+        if auto_update:
+            # Update class variable
+            cls.EXPIRY_DAYS = new_mapping
+            print("\n✅ EXPIRY_DAYS updated automatically")
+        else:
+            print("\n⚠️  Review the mapping above. To update, set auto_update=True")
+
+        print("="*80)
+
+        return new_mapping
 
 
 class NSEHolidayCalendar:
