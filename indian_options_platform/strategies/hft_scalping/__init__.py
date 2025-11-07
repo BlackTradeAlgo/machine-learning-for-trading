@@ -9,7 +9,7 @@ These are the PRIMARY strategies for intraday trading:
    - Profits from volatility by hedging with futures
    - Best in high volatility, trending markets
    - Time: Full day (9:30 AM - 3:15 PM)
-   - Capital: ¹15,000-30,000
+   - Capital: Rs 15,000-30,000
    - Expected: 1-3% per day
 
 2. ZeroDTEStrategy
@@ -17,7 +17,7 @@ These are the PRIMARY strategies for intraday trading:
    - Maximum theta decay on expiry day (Thursday)
    - Multiple sub-strategies: credit spreads, debit spreads, ATM scalps
    - Time: Expiry day only (9:30 AM - 3:20 PM)
-   - Capital: ¹5,000-10,000
+   - Capital: Rs 5,000-10,000
    - Expected: 20-50% per trade (HIGH RISK)
 
 Usage:
