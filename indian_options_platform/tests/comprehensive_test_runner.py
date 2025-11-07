@@ -104,19 +104,19 @@ def run_unit_tests():
 
     print("\n[1.2] NSE Expiry Engine Tests")
 
-    def test_nifty_expiry_thursday():
+    def test_nifty_expiry_tuesday():
         engine = NSEExpiryEngine()
-        expiry = engine.get_next_expiry('NIFTY', from_date=date(2025, 1, 6))
-        assert expiry.weekday() == 3, f"Nifty expiry should be Thursday, got {expiry.strftime('%A')}"
+        expiry = engine.get_next_expiry('NIFTY', from_date=date(2025, 11, 3))
+        assert expiry.weekday() == 1, f"Nifty expiry should be Tuesday (verified from Angel One), got {expiry.strftime('%A')}"
 
-    run_test('unit', 'Nifty Expiry Day (Thursday)', test_nifty_expiry_thursday)
+    run_test('unit', 'Nifty Expiry Day (Tuesday)', test_nifty_expiry_tuesday)
 
-    def test_banknifty_expiry_wednesday():
+    def test_banknifty_expiry_tuesday():
         engine = NSEExpiryEngine()
-        expiry = engine.get_next_expiry('BANKNIFTY', from_date=date(2025, 1, 6))
-        assert expiry.weekday() == 2, f"Bank Nifty expiry should be Wednesday, got {expiry.strftime('%A')}"
+        expiry = engine.get_next_expiry('BANKNIFTY', from_date=date(2025, 11, 3))
+        assert expiry.weekday() == 1, f"Bank Nifty expiry should be Tuesday (verified from Angel One), got {expiry.strftime('%A')}"
 
-    run_test('unit', 'Bank Nifty Expiry Day (Wednesday)', test_banknifty_expiry_wednesday)
+    run_test('unit', 'Bank Nifty Expiry Day (Tuesday)', test_banknifty_expiry_tuesday)
 
     def test_holiday_calendar():
         cal = NSEHolidayCalendar()
@@ -289,9 +289,9 @@ def run_system_tests():
         # Step 2: Select strategy based on market conditions
         recommendation = select_strategy(
             spot=18000,
-            iv=15.0,
+            iv=0.15,
             trend='sideways',
-            time_of_day='morning',
+            time_of_day='10:00',
             risk_appetite='moderate'
         )
 
