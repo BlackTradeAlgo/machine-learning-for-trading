@@ -1,0 +1,137 @@
+
+================================================================================
+ANGEL ONE API INTEGRATION TEST
+================================================================================
+
+⚠️  IMPORTANT: This test uses REAL credentials and LIVE API
+   - Connects to Angel One production servers
+   - Fetches real market data
+   - Does NOT place any real trades
+================================================================================
+
+[1] CREDENTIAL VALIDATION
+--------------------------------------------------------------------------------
+  ✅ API Key: 5dZp...j3Dg
+  ✅ Client ID: H124854
+  ✅ Password: ****
+  ✅ TOTP Secret: L2AA...BPOE
+
+[2] AUTHENTICATION TEST
+--------------------------------------------------------------------------------
+  → Initializing Angel One SmartAPI...
+  → Generating TOTP code...
+  → Attempting login...
+[I 251107 20:41:01 smartConnect:124] in pool
+INFO:core.market_data.angel_one_api:✅ Angel One login successful!
+INFO:core.market_data.angel_one_api:User: H124854
+INFO:core.market_data.angel_one_api:✅ Loaded 149751 instruments
+  ✅ Angel One Login
+     → User: H124854
+  ✅ JWT Token Generated
+     → Token: Bearer eyJhbGciOiJIU...
+  ✅ Feed Token Generated
+     → Feed: eyJhbGciOiJIUzUxMiJ9...
+
+[3] INSTRUMENT MASTER DATA TEST
+--------------------------------------------------------------------------------
+  ✅ Instrument Master Loaded
+     → 149,751 instruments
+  ✅ Nifty Instruments Found
+     → 1576 instruments
+  ✅ Bank Nifty Instruments Found
+     → 956 instruments
+
+[4] OPTIONS SEARCH TEST
+--------------------------------------------------------------------------------
+  → Searching for Nifty options (Expiry: 13NOV25)...
+  ❌ Nifty Options Search
+     → No options found
+  ⚠️  No options found for expiry 13NOV25
+
+[5] TOKEN LOOKUP TEST
+--------------------------------------------------------------------------------
+  ✅ Nifty Token Lookup
+     → Token: 99926000
+  ✅ Bank Nifty Token Lookup
+     → Token: 99926009
+
+[6] LIVE MARKET DATA TEST
+--------------------------------------------------------------------------------
+  ⚠️  Note: These tests may fail outside market hours (9:15 AM - 3:30 PM)
+  ⚠️  Tests running outside market hours - live data may be unavailable
+  → Fetching Nifty LTP...
+  ✅ Nifty LTP Fetch
+     → Price: ₹25,492.30
+  → Fetching Nifty Quote...
+  ✅ Nifty Quote Fetch
+     → LTP: ₹25,492.30, Open: ₹25,433.80
+     → High: ₹25,551.25
+     → Low: ₹25,318.45
+     → Volume: 0
+
+[7] ACCOUNT DATA TEST (READ-ONLY)
+--------------------------------------------------------------------------------
+  → Fetching current positions...
+  ✅ Positions Fetch
+     → 0 position(s)
+  → Fetching order book...
+  ✅ Orders Fetch
+     → 0 order(s)
+  → Fetching holdings...
+  ✅ Holdings Fetch
+     → 3 holding(s)
+
+[8] ORDER VALIDATION TEST (NO REAL ORDERS)
+--------------------------------------------------------------------------------
+  ⚠️  This section validates order parameters WITHOUT placing real orders
+
+[9] CLEANUP & LOGOUT
+--------------------------------------------------------------------------------
+  → Logging out from Angel One...
+INFO:core.market_data.angel_one_api:✅ WebSocket stopped
+INFO:core.market_data.angel_one_api:✅ Logged out successfully
+  ✅ Logout
+     → Session terminated
+
+================================================================================
+ANGEL ONE API INTEGRATION TEST - FINAL REPORT
+================================================================================
+
+Total Tests: 15
+✅ Passed: 14
+❌ Failed: 1
+⚠️  Warnings: 2
+
+Success Rate: 93.3%
+
+================================================================================
+STATUS: ✅ EXCELLENT - Angel One integration is fully functional
+================================================================================
+
+❌ FAILED TESTS:
+  - Nifty Options Search
+
+⚠️  WARNINGS:
+  - No options found for expiry 13NOV25
+  - Tests running outside market hours - live data may be unavailable
+
+✅ PASSED TESTS:
+  - Angel One Login
+  - JWT Token Generated
+  - Feed Token Generated
+  - Instrument Master Loaded
+  - Nifty Instruments Found
+  - Bank Nifty Instruments Found
+  - Nifty Token Lookup
+  - Bank Nifty Token Lookup
+  - Nifty LTP Fetch
+  - Nifty Quote Fetch
+  - Positions Fetch
+  - Orders Fetch
+  - Holdings Fetch
+  - Logout
+
+================================================================================
+TEST COMPLETE
+================================================================================
+

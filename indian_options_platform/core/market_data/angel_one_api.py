@@ -10,7 +10,10 @@ Features:
 - WebSocket streaming
 """
 
-from smartapi import SmartConnect
+try:
+    from smartapi import SmartConnect
+except ImportError:
+    from SmartApi.smartConnect import SmartConnect
 import pyotp
 from typing import Dict, List, Optional, Callable
 import pandas as pd
