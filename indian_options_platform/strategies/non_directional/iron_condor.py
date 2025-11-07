@@ -35,9 +35,9 @@ class IronCondor(BaseStrategy):
     - Buy 19700 CE @ ₹25
 
     Net Credit: (60 + 55 - 30 - 25) = ₹60 per share
-    Total Credit: ₹60 * 50 (lot size) = ₹3,000
-    Max Profit: ₹3,000
-    Max Loss: (100 - 60) * 50 = ₹2,000
+    Total Credit: ₹60 * 75 (lot size) = ₹4,500
+    Max Profit: ₹4,500
+    Max Loss: (100 - 60) * 75 = ₹3,000
     Profit Range: 19340 to 19660 (approx)
     """
 
@@ -51,7 +51,7 @@ class IronCondor(BaseStrategy):
                  upper_short_call_premium: float,
                  upper_long_call_premium: float,
                  quantity: int = 1,
-                 lot_size: int = 50):
+                 lot_size: int = 75):
         """
         Initialize Iron Condor
 
@@ -70,7 +70,7 @@ class IronCondor(BaseStrategy):
         quantity : int
             Number of Iron Condors
         lot_size : int
-            Lot size (default: 50 for Nifty)
+            Lot size (default: 75 for Nifty)
         """
         super().__init__(
             name="Iron Condor",
@@ -135,7 +135,7 @@ class IronCondor(BaseStrategy):
                        put_credit: float = 30,
                        call_credit: float = 30,
                        quantity: int = 1,
-                       lot_size: int = 50) -> 'IronCondor':
+                       lot_size: int = 75) -> 'IronCondor':
         """
         Create a balanced Iron Condor around current spot
 
@@ -263,7 +263,7 @@ if __name__ == "__main__":
         upper_short_call_premium=55,
         upper_long_call_premium=25,
         quantity=1,
-        lot_size=50
+        lot_size=75
     )
 
     ic.print_detailed_summary()
@@ -281,7 +281,7 @@ if __name__ == "__main__":
         put_credit=30,
         call_credit=30,
         quantity=2,
-        lot_size=50
+        lot_size=75
     )
 
     ic_balanced.print_detailed_summary()

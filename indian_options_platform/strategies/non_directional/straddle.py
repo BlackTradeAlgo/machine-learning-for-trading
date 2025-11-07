@@ -31,10 +31,10 @@ class Straddle(BaseStrategy):
     - Buy 19500 CE @ ₹150
     - Buy 19500 PE @ ₹140
 
-    Total Cost: ₹290 * 50 = ₹14,500
+    Total Cost: ₹290 * 75 = ₹21,750
     Breakevens: 19210, 19790
     Max Profit: Unlimited
-    Max Loss: ₹14,500
+    Max Loss: ₹21,750
     """
 
     def __init__(self,
@@ -43,7 +43,7 @@ class Straddle(BaseStrategy):
                  put_premium: float,
                  is_long: bool = True,
                  quantity: int = 1,
-                 lot_size: int = 50):
+                 lot_size: int = 75):
         """
         Initialize Straddle
 
@@ -60,7 +60,7 @@ class Straddle(BaseStrategy):
         quantity : int
             Number of straddles
         lot_size : int
-            Lot size (default: 50 for Nifty)
+            Lot size (default: 75 for Nifty)
         """
         strategy_type = "Long Straddle" if is_long else "Short Straddle"
         super().__init__(
@@ -96,7 +96,7 @@ class Straddle(BaseStrategy):
     @classmethod
     def long_straddle(cls, atm_strike: float, call_premium: float,
                      put_premium: float, quantity: int = 1,
-                     lot_size: int = 50) -> 'Straddle':
+                     lot_size: int = 75) -> 'Straddle':
         """Create Long Straddle"""
         return cls(atm_strike, call_premium, put_premium,
                   is_long=True, quantity=quantity, lot_size=lot_size)
@@ -104,7 +104,7 @@ class Straddle(BaseStrategy):
     @classmethod
     def short_straddle(cls, atm_strike: float, call_premium: float,
                       put_premium: float, quantity: int = 1,
-                      lot_size: int = 50) -> 'Straddle':
+                      lot_size: int = 75) -> 'Straddle':
         """Create Short Straddle"""
         return cls(atm_strike, call_premium, put_premium,
                   is_long=False, quantity=quantity, lot_size=lot_size)
@@ -233,7 +233,7 @@ class LongStraddle(Straddle):
     """Long Straddle - Buy ATM Call + Buy ATM Put"""
 
     def __init__(self, strike: float, call_premium: float,
-                 put_premium: float, quantity: int = 1, lot_size: int = 50):
+                 put_premium: float, quantity: int = 1, lot_size: int = 75):
         super().__init__(strike, call_premium, put_premium,
                         is_long=True, quantity=quantity, lot_size=lot_size)
 
@@ -242,7 +242,7 @@ class ShortStraddle(Straddle):
     """Short Straddle - Sell ATM Call + Sell ATM Put"""
 
     def __init__(self, strike: float, call_premium: float,
-                 put_premium: float, quantity: int = 1, lot_size: int = 50):
+                 put_premium: float, quantity: int = 1, lot_size: int = 75):
         super().__init__(strike, call_premium, put_premium,
                         is_long=False, quantity=quantity, lot_size=lot_size)
 
@@ -257,7 +257,7 @@ if __name__ == "__main__":
         call_premium=150,
         put_premium=140,
         quantity=1,
-        lot_size=50
+        lot_size=75
     )
 
     long_straddle.print_detailed_summary(
@@ -275,7 +275,7 @@ if __name__ == "__main__":
         call_premium=180,
         put_premium=170,
         quantity=1,
-        lot_size=50
+        lot_size=75
     )
 
     short_straddle.print_detailed_summary(

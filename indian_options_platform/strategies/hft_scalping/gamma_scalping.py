@@ -80,7 +80,7 @@ class GammaScalpingStrategy:
                  put_delta: float = -0.5,
                  call_gamma: float = 0.01,
                  put_gamma: float = 0.01,
-                 lot_size: int = 50,
+                 lot_size: int = 75,
                  delta_threshold: float = 0.15,
                  profit_target_pct: float = 0.5,
                  max_adjustments: int = 10):

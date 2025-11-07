@@ -65,7 +65,7 @@ class PaperTradingAccount:
 
     Example Usage:
     --------------
-    account = PaperTradingAccount(initial_capital=100000)
+    account = PaperTradingAccount(initial_capital=10000000)
 
     # Place order
     order = account.place_order(
@@ -84,7 +84,7 @@ class PaperTradingAccount:
     """
 
     def __init__(self,
-                 initial_capital: float = 100000,
+                 initial_capital: float = 10000000,  # 1 Crore
                  name: str = "Paper Account",
                  brokerage_per_order: float = 20,
                  enable_margin: bool = False,

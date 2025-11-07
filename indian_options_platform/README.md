@@ -27,7 +27,9 @@ Democratizing institutional-grade options trading tools for retail traders in In
 
 - ✅ **NSE/BSE Integration**
   - Real-time options chain data
-  - Nifty, Bank Nifty, Fin Nifty support
+  - Nifty (Lot: 75), Bank Nifty (Lot: 30), Fin Nifty, Sensex (Lot: 20)
+  - **Expiry Engine**: Auto-calculate expiry dates (Weekly/Monthly)
+  - **Holiday Calendar**: NSE holidays 2025-2026 with trading day calculations
   - India VIX tracking
   - FII/DII data integration
   - Put-Call Ratio (PCR) analysis
@@ -66,7 +68,7 @@ Democratizing institutional-grade options trading tools for retail traders in In
 
 - ✅ **Event-Driven Backtest Engine** - Bar-by-bar simulation
 - ✅ **Realistic Cost Modeling** - STT, brokerage, GST, slippage
-- ✅ **Paper Trading Account** - Virtual trading with real prices
+- ✅ **Paper Trading Account** - Virtual trading with ₹1 Crore capital
 - ✅ **Performance Analytics** - Sharpe, Sortino, max drawdown
 - 🔄 Walk-forward optimization (Coming Soon)
 
@@ -89,9 +91,12 @@ indian_options_platform/
 ├── core/
 │   ├── options_pricing/       # ✅ Black-Scholes, Greeks, IV
 │   ├── market_data/            # ✅ NSE data + Angel One API
+│   │   ├── nse_data.py        # NSE options chain
+│   │   ├── angel_one_api.py   # Live trading API
+│   │   └── nse_expiry_engine.py  # ✅ Expiry & holiday calendar
 │   ├── order_management/       # ✅ Live trading + Paper trading
 │   │   ├── live_trading_engine.py
-│   │   └── paper_trading.py
+│   │   └── paper_trading.py (₹1 Crore capital)
 │   └── risk_engine/            # Risk management (coming soon)
 │
 ├── strategies/                # ✅ Unified Strategy Library (v2.0.0)

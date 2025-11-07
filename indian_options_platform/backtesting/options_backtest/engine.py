@@ -84,7 +84,7 @@ class OptionsBacktester:
 
     Example Usage:
     --------------
-    backtester = OptionsBacktester(initial_capital=100000)
+    backtester = OptionsBacktester(initial_capital=10000000)
     backtester.load_data(options_data)
 
     for timestamp, data in backtester.iterate():
@@ -96,7 +96,7 @@ class OptionsBacktester:
     """
 
     def __init__(self,
-                 initial_capital: float = 100000,
+                 initial_capital: float = 10000000,  # 1 Crore
                  brokerage_per_order: float = 20,
                  stt_rate: float = 0.0005,
                  exchange_charges_rate: float = 0.0005,

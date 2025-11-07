@@ -49,7 +49,7 @@ class Position:
     position_type: PositionType
     premium: float
     quantity: int = 1
-    lot_size: int = 50  # Default: Nifty lot size
+    lot_size: int = 75  # Default: Nifty lot size (updated Nov 2024)
 
     @property
     def total_lots(self) -> int:
@@ -462,7 +462,7 @@ if __name__ == "__main__":
         position_type=PositionType.LONG,
         premium=150,
         quantity=1,
-        lot_size=50
+        lot_size=75
     ))
 
     # Short 19600 CE @ ₹100
@@ -472,7 +472,7 @@ if __name__ == "__main__":
         position_type=PositionType.SHORT,
         premium=100,
         quantity=1,
-        lot_size=50
+        lot_size=75
     ))
 
     # Print summary

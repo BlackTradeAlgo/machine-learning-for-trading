@@ -66,7 +66,7 @@ class ZeroDTEStrategy:
                  profit_target_pct: float = 50,
                  stop_loss_pct: float = 100,
                  max_trades: int = 5,
-                 lot_size: int = 50):
+                 lot_size: int = 75):
         """Initialize 0DTE Strategy"""
 
         self.spot_price = spot_price
