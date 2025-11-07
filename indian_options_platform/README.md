@@ -50,18 +50,23 @@ Democratizing institutional-grade options trading tools for retail traders in In
 - ✅ **LSTM Price Predictor** - Multi-step price forecasting
 - ✅ **Random Forest Direction Classifier** - Up/Down/Sideways prediction
 - ✅ **30+ Technical Features** - Automated feature engineering
-- 🔄 XGBoost for intraday signals (Coming Soon)
-- 🔄 GARCH for volatility forecasting (Coming Soon)
-- 🔄 Sentiment analysis (Twitter, Reddit, News) (Coming Soon)
+- ✅ **XGBoost Intraday Signals** - Gradient boosting for entry/exit signals
+- ✅ **GARCH Volatility Forecasting** - Time-series volatility prediction
+- ✅ **Sentiment Analysis** - Twitter, Reddit, News analysis
 
 ### **📈 Analytics & Risk Management**
 
+- ✅ **Risk Engine** - Comprehensive risk management system
+- ✅ **Position Sizing** - Kelly Criterion, Fixed Fractional
+- ✅ **Daily Loss/Profit Limits** - Automated circuit breakers
+- ✅ **Portfolio Greeks Monitoring** - Real-time exposure tracking
+- ✅ **VaR (Value at Risk)** - 95% confidence interval
+- ✅ **Drawdown Tracking** - Peak-to-trough monitoring
+- ✅ **Real-time P&L** - Live profit/loss calculation
 - Portfolio Greeks aggregation
-- Real-time P&L tracking
 - Risk-reward ratios
 - Breakeven analysis
 - Probability of profit (Monte Carlo)
-- Max drawdown monitoring
 - SPAN margin calculator
 
 ### **🔄 Backtesting & Paper Trading**
@@ -70,7 +75,7 @@ Democratizing institutional-grade options trading tools for retail traders in In
 - ✅ **Realistic Cost Modeling** - STT, brokerage, GST, slippage
 - ✅ **Paper Trading Account** - Virtual trading with ₹1 Crore capital
 - ✅ **Performance Analytics** - Sharpe, Sortino, max drawdown
-- 🔄 Walk-forward optimization (Coming Soon)
+- ✅ **Walk-Forward Optimization** - Out-of-sample testing to prevent overfitting
 
 ### **🔥 Live Trading Integration**
 
@@ -97,7 +102,8 @@ indian_options_platform/
 │   ├── order_management/       # ✅ Live trading + Paper trading
 │   │   ├── live_trading_engine.py
 │   │   └── paper_trading.py (₹1 Crore capital)
-│   └── risk_engine/            # Risk management (coming soon)
+│   └── risk_engine/            # ✅ Comprehensive risk management
+│       └── risk_manager.py     # Position sizing, limits, VaR
 │
 ├── strategies/                # ✅ Unified Strategy Library (v2.0.0)
 │   ├── base_strategy.py      # Core base class
@@ -109,16 +115,20 @@ indian_options_platform/
 │   ├── price_prediction/     # ✅ LSTM, Random Forest
 │   │   ├── lstm_predictor.py
 │   │   └── random_forest_predictor.py
-│   └── (more coming soon)
+│   ├── intraday_signals/     # ✅ XGBoost signals
+│   ├── volatility_forecasting/ # ✅ GARCH model
+│   └── sentiment/            # ✅ Sentiment analysis
 │
 ├── backtesting/               # ✅ Backtesting Engine
 │   ├── options_backtest/     # ✅ Event-driven engine
-│   └── transaction_costs/    # ✅ STT, brokerage, slippage
+│   ├── transaction_costs/    # ✅ STT, brokerage, slippage
+│   └── walk_forward/         # ✅ Walk-forward optimization
 │
-├── dashboard/                 # Web dashboard (coming soon)
-│   ├── live_monitoring/
-│   ├── strategy_selector/
-│   └── analytics/
+├── dashboard/                 # ✅ Web Dashboard
+│   ├── app.py                # Flask application
+│   ├── live_monitoring/      # Real-time monitoring
+│   ├── strategy_selector/    # Strategy selection UI
+│   └── analytics/            # Performance analytics
 │
 ├── data/                      # Data storage
 │   ├── nse_options/
