@@ -92,3 +92,7 @@ ipywidgets>=7.6.0
 # NSE specific (alternative data sources)
 nsepy>=0.8  # NSE historical data
 nsetools>=1.0.11  # NSE tools
+
+# Angel One Integration (live trading)
+smartapi-python>=1.3.0  # Angel One SmartAPI
+pyotp>=2.8.0  # TOTP for 2FA authentication
